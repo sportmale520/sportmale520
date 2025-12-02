@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梨山國中小 防寒應變中心</title>
+    <!-- 載入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 設置全域字體為 Inter */
+        html { font-family: 'Inter', sans-serif; }
+        /* 定義動畫 */
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+
+    <!-- Alert Banner (警報橫幅) -->
+    <div id="alert-banner" class="bg-red-600 text-white px-4 py-3 shadow-md relative animate-pulse-slow">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <!-- AlertTriangle Icon SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14a2 2 0 0 0 1.74 3H19.9a2 2 0 0 0 1.73-3Z"/></svg>
+                <span class="font-bold">低溫特報：</span>
+                <span class="text-sm md:text-base">強烈東北季風來襲，梨山地區嚴防個位數低溫與大雨。</span>
+            </div>
+            <button onclick="document.getElementById('alert-banner').style.display='none';" class="text-white hover:text-red-200">
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- Header (頁首) -->
+    <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-8 px-4 shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-wide">
+                梨山國中小 防寒應變中心
+            </h1>
+            <p class="text-blue-200 text-lg">Lishan Elementary & Junior High School Cold Weather Response</p>
+            
+            <!-- Weather Widget Card (天氣資訊卡) -->
+            <div class="mt-6 bg-white/10 backdrop-blur-md rounded-xl p-4 max-w-2xl mx-auto border border-white/20 flex flex-col md:flex-row items-center justify-around gap-4">
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-2 text-yellow-300 mb-1">
+                        <!-- Thermometer Icon SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M14 4v10.5a3.5 3.5 0 1 1-7 0V4"/><line x1="7" x2="14" y1="4" y2="4"/><line x1="7" x2="14" y1="11" y2="11"/><line x1="7" x2="14" y1="8" y2="8"/></svg>
+                        <span class="text-sm font-semibold">當前預報</span>
+                    </div>
+                    <div class="text-3xl font-bold" id="mountain-temp">預估 4-8°C (梨山地區)</div>
+                </div>
+                <div class="h-px w-full md:w-px md:h-12 bg-white/30"></div>
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-2 text-blue-300 mb-1">
+                        <!-- CloudRain Icon SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.239"/><path d="m16 21-4-4-4 4"/></svg>
+                        <span class="text-sm font-semibold">天氣概況</span>
+                    </div>
+                    <div class="text-lg">濕冷 / 陣雨 / 濃霧</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content (主要內容) -->
+    <main class="container mx-auto px-4 py-8 max-w-5xl">
+        
+        <!-- Navigation Tabs (導航標籤) -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-white p-1 rounded-full shadow-md inline-flex">
+                <button
+                    id="tab-admin"
+                    onclick="setActiveTab('admin')"
+                    class="px-6 py-2 rounded-full font-medium transition-all duration-300 bg-blue-600 text-white shadow-sm"
+                >
+                    行政處室應變
+                </button>
+                <button
+                    id="tab-student"
+                    onclick="setActiveTab('student')"
+                    class="px-6 py-2 rounded-full font-medium transition-all duration-300 text-slate-600 hover:bg-slate-100"
+                >
+                    師生禦寒指引
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area (內容區域) -->
+        <div id="content-area" class="transition-opacity duration-500">
+            <!-- Content will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- Footer (頁尾) -->
+    <footer class="bg-slate-800 text-slate-400 py-6 mt-12">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p class="mb-2">資料來源：三立新聞網 (SETN) / 中央氣象署</p>
+            <p>梨山國中小 關心您</p>
+            <p class="text-xs mt-4 opacity-50">本頁面為防災應變模擬網站，實際停班課資訊請依行政院人事行政總處公告為準。</p>
+        </div>
+    </footer>
+
+    <script>
+        // === 數據定義 (DATA DEFINITION) ===
+        const newsData = {
+            mountainTemp: "預估 4-8°C (梨山地區)",
+        };
+
+        const departments = [
+            {
+                id: 'student_affairs',
+                name: '學務處',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>', // Shield
+                color: 'bg-blue-100 text-blue-800',
+                tasks: [
+                    "彈性調整服裝規定，允許學生在校服外添加保暖便服/外套。",
+                    "宣導學生避免在濕滑走廊奔跑 (因應東北季風挾雨)。",
+                    "監測類流感及呼吸道疾病請假狀況。",
+                    "加強晨間及課間導護，提醒學生上下學注意路面濕滑。"
+                ]
+            },
+            {
+                id: 'general_affairs',
+                name: '總務處',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M22 10a2 2 0 0 0-2-2h-3V3a1 1 0 0 0-2 0v5h-4V3a1 1 0 0 0-2 0v5H7V3a1 1 0 0 0-2 0v5H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V10Z"/></svg>', // Warehouse
+                color: 'bg-indigo-100 text-indigo-800',
+                tasks: [
+                    "檢查校舍門窗氣密性，避免強風灌入教室。",
+                    "確保飲水機熱水供應正常，提升水溫檢測頻率。",
+                    "檢視校園磁磚/地板是否因溫差或潮濕有隆起或濕滑危險。",
+                    "巡檢戶外懸掛物及樹木枝幹，防範強陣風吹落。"
+                ]
+            },
+            {
+                id: 'academic_affairs',
+                name: '教務處',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="12" x2="16" y2="12"/></svg>', // BookOpen
+                color: 'bg-emerald-100 text-emerald-800',
+                tasks: [
+                    "體育課若遇低溫降雨，應彈性調整至室內或進行靜態教學。",
+                    "提醒教師隨時注意班級學生精神狀況 (低溫易嗜睡)。",
+                    "視天候狀況評估是否調整戶外教學活動。"
+                ]
+            },
+            {
+                id: 'counseling',
+                name: '輔導室',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.39 0-2.6.56-3.46 1.35C12.59 3.56 11.38 3 10 3A5.5 5.5 0 0 0 5 9.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>', // HeartHandshake
+                color: 'bg-pink-100 text-pink-800',
+                tasks: [
+                    "關懷弱勢及清寒學生，確認禦寒衣物是否充足。",
+                    "注意學生因天氣陰冷可能產生的情緒波動 (季節性情緒)。",
+                    "提供溫暖的諮詢空間與熱茶。"
+                ]
+            }
+        ];
+
+        const studentTips = [
+            {
+                title: "洋蔥式穿搭術",
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-orange-500 mb-2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', // Users
+                content: "內層穿排汗衣，中層穿毛衣/刷毛衣保暖，外層務必穿著防風防水外套 (山上濕氣重)。",
+                important: true
+            },
+            {
+                title: "頭頸部保暖",
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-blue-500 mb-2"><path d="M12 2v20"/><path d="M17 7c-2 2-3 3-5 3s-3-1-5-3"/><path d="M19 12h3"/><path d="M2 12h3"/></svg>', // Wind (Using a simpler wind icon equivalent)
+                content: "30%的熱量從頭部散失！請務必戴上毛帽與圍巾，保護氣管避免冷空氣直接刺激。",
+                important: false
+            },
+            {
+                title: "多喝溫熱水",
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-amber-600 mb-2"><path d="M18.8 6.2a2 2 0 1 0 0 4l-4-4"/><path d="M15 11.5a3 3 0 1 0 0-3H4v11h11a3 3 0 1 0 0-3H4"/><path d="M4 2v4"/></svg>', // Coffee (Using a mug icon equivalent)
+                content: "隨身攜帶保溫瓶，下課適時補充溫水，促進血液循環，避免身體僵硬。",
+                important: false
+            },
+            {
+                title: "雨天安全",
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-sky-600 mb-2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.239"/><path d="m16 21-4-4-4 4"/></svg>', // CloudRain
+                content: "地板濕滑，走路請放慢。雨傘應選擇亮色系，增加在霧氣中的能見度。",
+                important: true
+            }
+        ];
+
+        // === 互動邏輯 (INTERACTION LOGIC) ===
+        let currentActiveTab = 'admin';
+
+        /**
+         * 切換導航標籤和內容。
+         * @param {string} tabId - 要切換到的標籤 ID ('admin' 或 'student')
+         */
+        function setActiveTab(tabId) {
+            currentActiveTab = tabId;
+
+            // 1. 更新按鈕樣式
+            const adminBtn = document.getElementById('tab-admin');
+            const studentBtn = document.getElementById('tab-student');
+
+            if (tabId === 'admin') {
+                adminBtn.className = 'px-6 py-2 rounded-full font-medium transition-all duration-300 bg-blue-600 text-white shadow-sm';
+                studentBtn.className = 'px-6 py-2 rounded-full font-medium transition-all duration-300 text-slate-600 hover:bg-slate-100';
+            } else {
+                adminBtn.className = 'px-6 py-2 rounded-full font-medium transition-all duration-300 text-slate-600 hover:bg-slate-100';
+                studentBtn.className = 'px-6 py-2 rounded-full font-medium transition-all duration-300 bg-orange-500 text-white shadow-sm';
+            }
+
+            // 2. 渲染新內容
+            renderContent();
+        }
+
+        /**
+         * 渲染主要內容區域。
+         */
+        function renderContent() {
+            const contentArea = document.getElementById('content-area');
+
+            if (currentActiveTab === 'admin') {
+                contentArea.innerHTML = renderAdminSection();
+            } else {
+                contentArea.innerHTML = renderStudentSection();
+                // 由於 Checklist 項目是動態生成的，需要重新綁定事件
+                bindChecklistEvents();
+            }
+        }
+
+        /**
+         * 生成行政處室應變內容的 HTML。
+         */
+        function renderAdminSection() {
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
+
+            departments.forEach(dept => {
+                const tasksHtml = dept.tasks.map((task, idx) => `
+                    <li class="flex items-start gap-3 group cursor-pointer" onclick="this.querySelector('input').checked = !this.querySelector('input').checked;">
+                       <input type="checkbox" id="${dept.id}-task-${idx}" class="mt-1 w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer" />
+                       <span class="text-slate-700 group-hover:text-blue-800 transition-colors leading-relaxed">
+                         ${task}
+                       </span>
+                    </li>
+                `).join('');
+
+                html += `
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="px-6 py-4 ${dept.color} flex items-center gap-3">
+                            ${dept.iconSvg}
+                            <h2 class="text-xl font-bold">${dept.name}</h2>
+                        </div>
+                        <div class="p-6">
+                            <ul class="space-y-3">
+                                ${tasksHtml}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 特別提醒區塊
+            html += `
+                <div class="md:col-span-2 bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-4">
+                    <h3 class="text-lg font-bold text-yellow-800 mb-2 flex items-center gap-2">
+                        <!-- AlertTriangle Icon SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14a2 2 0 0 0 1.74 3H19.9a2 2 0 0 0 1.73-3Z"/></svg>
+                        特別提醒
+                    </h3>
+                    <ul class="list-disc list-inside text-yellow-900 space-y-1">
+                        <li>請校警隊加強夜間巡邏，注意是否有門窗未關導致水管結冰或破裂（雖然機率低但需防範）。</li>
+                        <li>梨山路況多變，請隨時注意公路局發布的中橫路況，必要時通知家長接送安全。</li>
+                    </ul>
+                </div>
+            </div>`;
+
+            return html;
+        }
+
+        /**
+         * 生成師生禦寒指引內容的 HTML。
+         */
+        function renderStudentSection() {
+            let tipsHtml = '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
+            studentTips.forEach(tip => {
+                const borderClass = tip.important ? 'border-red-500' : 'border-blue-500';
+                tipsHtml += `
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border-l-4 ${borderClass}">
+                        <div class="flex flex-col items-center text-center">
+                            ${tip.iconSvg}
+                            <h3 class="text-xl font-bold mb-2 text-slate-800">${tip.title}</h3>
+                            <p class="text-slate-600">${tip.content}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            tipsHtml += '</div>';
+
+            const checklistItems = [
+                "我有穿發熱衣或排汗衫當內層",
+                "我有帶保溫瓶，裡面裝滿溫水",
+                "我有準備雨具 (雨衣優於雨傘)",
+                "我的外套防風且防水",
+                "我有帶備用的襪子 (如果濕掉可以換)"
+            ];
+
+            const checklistHtml = checklistItems.map((text, index) => `
+                <div 
+                    id="check-item-${index}"
+                    class="flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer select-none bg-slate-50 border-slate-100 hover:bg-slate-100"
+                    data-checked="false"
+                >
+                    <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex-shrink-0 check-icon" />
+                    <span class="text-slate-600 check-text">
+                        ${text}
+                    </span>
+                </div>
+            `).join('');
+
+
+            return `
+                ${tipsHtml}
+                <!-- Interactive Checklist for Kids -->
+                <div class="mt-8 bg-white rounded-xl shadow-sm p-6 border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 text-center">
+                        🎒 上學前自我檢查表 (點擊打勾)
+                    </h3>
+                    <div class="flex flex-col gap-3 max-w-md mx-auto" id="student-checklist">
+                        ${checklistHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * 綁定學生檢查表點擊事件。
+         */
+        function bindChecklistEvents() {
+            const checklistContainer = document.getElementById('student-checklist');
+            if (checklistContainer) {
+                // 使用事件委派監聽點擊事件
+                checklistContainer.addEventListener('click', function(event) {
+                    let target = event.target.closest('[data-checked]');
+                    if (target) {
+                        toggleCheckItem(target);
+                    }
+                });
+            }
+        }
+
+        /**
+         * 切換檢查表項目的狀態和樣式。
+         * @param {HTMLElement} itemElement - 被點擊的檢查表項目元素。
+         */
+        function toggleCheckItem(itemElement) {
+            const isChecked = itemElement.getAttribute('data-checked') === 'true';
+            const newCheckedState = !isChecked;
+            
+            itemElement.setAttribute('data-checked', newCheckedState);
+
+            const icon = itemElement.querySelector('.check-icon');
+            const text = itemElement.querySelector('.check-text');
+
+            if (newCheckedState) {
+                // 變為勾選狀態
+                itemElement.className = 'flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer select-none bg-green-50 border-green-200';
+                icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-green-500 flex-shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
+                text.className = 'text-green-800 font-medium check-text';
+            } else {
+                // 變為未勾選狀態
+                itemElement.className = 'flex items-center gap-3 p-3 rounded-lg border transition-all cursor-pointer select-none bg-slate-50 border-slate-100 hover:bg-slate-100';
+                icon.innerHTML = '';
+                text.className = 'text-slate-600 check-text';
+            }
+        }
+
+
+        // === 初始化 (INITIALIZATION) ===
+        window.onload = function() {
+            // 首次渲染內容，預設為 'admin' 標籤
+            setActiveTab('admin'); 
+        };
+    </script>
+</body>
+</html>
+
+
